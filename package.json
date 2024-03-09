@@ -1,0 +1,33 @@
+{
+  "name": "dice-string-similarity",
+  "version": "1.0.0",
+  "description": "Finds degree of similarity between strings, based on Dice's Coefficient.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ascriver/dice-string-similarity.git"
+  },
+  "keywords": [
+    "strings",
+    "similar",
+    "difference",
+    "similarity",
+    "compare",
+    "comparison",
+    "degree",
+    "match",
+    "matching",
+    "dice",
+    "levenshtein"
+  ],
+  "files": [
+    "src/index.js"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
