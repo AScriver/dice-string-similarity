@@ -1,60 +1,62 @@
-const { compare, findBestMatch } = require('../src/index.js'); // Adjust the path as necessary
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const { compare, findBestMatch } = require('../dist/cjs/index.js');
 
-describe('compare', () => {
-    test('returns 1 for identical strings', () => {
-        expect(compare('hello', 'hello')).toBe(1);
-    });
-
-    test('returns 0 for completely different strings', () => {
-        expect(compare('hello', 'world')).toBe(0);
-    });
-
-    test('ignores spaces correctly', () => {
-        expect(compare('h e l l o', 'hello')).toBe(1);
-    });
-
-    test('handles one or both empty strings', () => {
-        expect(compare('', '')).toBe(1);
-        expect(compare('hello', '')).toBe(0);
-        expect(compare('', 'world')).toBe(0);
-    });
-
-    test('returns 0 for strings shorter than 2 characters', () => {
-        expect(compare('h', 'w')).toBe(0);
-    });
-
-    test('calculates similarity score for similar strings', () => {
-        expect(compare('hello', 'hallo')).toBeGreaterThan(0);
-        expect(compare('hello', 'hallo')).toBeLessThan(1);
-    });
+test('compare returns 1 for identical strings', () => {
+    assert.equal(compare('hello', 'hello'), 1);
 });
 
-describe('findBestMatch', () => {
-    test('finds the correct best match from an array of target strings', () => {
-        const result = findBestMatch('hello', ['hello', 'world', 'hell', 'hello world']);
-        expect(result.bestMatch.target).toBe('hello');
-        expect(result.bestMatch.rating).toBe(1);
-    });
+test('compare returns 0 for completely different strings', () => {
+    assert.equal(compare('hello', 'world'), 0);
+});
 
-    test('handles no matches gracefully', () => {
-        const result = findBestMatch('hello', ['world', 'planet', 'galaxy']);
-        expect(result.bestMatch.rating).toBeLessThan(1);
-    });
+test('compare ignores spaces correctly', () => {
+    assert.equal(compare('h e l l o', 'hello'), 1);
+});
 
-    test('throws error for invalid arguments', () => {
-        expect(() => findBestMatch(123, ['hello', 'world']))
-            .toThrow('Bad arguments: First argument should be a string, second should be an array of strings');
-    });
+test('compare handles one or both empty strings', () => {
+    assert.equal(compare('', ''), 1);
+    assert.equal(compare('hello', ''), 0);
+    assert.equal(compare('', 'world'), 0);
+});
 
-    test('handles empty target strings array', () => {
-        expect(() => {
-            findBestMatch('hello', []);
-        }).toThrow('Bad arguments: First argument should be a string, second should be an array of strings');
-    });
+test('compare returns 0 for strings shorter than 2 characters', () => {
+    assert.equal(compare('h', 'w'), 0);
+});
 
-    test('correctly identifies the first string as the best match when all target strings are identical to the main string', () => {
-        const result = findBestMatch('hello', ['hello', 'hello', 'hello']);
-        expect(result.bestMatchIndex).toBe(0);
-        expect(result.bestMatch.rating).toBe(1);
-    });
+test('compare calculates similarity score for similar strings', () => {
+    const score = compare('hello', 'hallo');
+    assert.ok(score > 0);
+    assert.ok(score < 1);
+});
+
+test('findBestMatch finds the correct best match from an array of target strings', () => {
+    const result = findBestMatch('hello', ['hello', 'world', 'hell', 'hello world']);
+    assert.equal(result.bestMatch.target, 'hello');
+    assert.equal(result.bestMatch.rating, 1);
+});
+
+test('findBestMatch handles no matches gracefully', () => {
+    const result = findBestMatch('hello', ['world', 'planet', 'galaxy']);
+    assert.ok(result.bestMatch.rating < 1);
+});
+
+test('findBestMatch throws error for invalid arguments', () => {
+    assert.throws(
+        () => findBestMatch(123, ['hello', 'world']),
+        /Bad arguments: First argument should be a string, second should be an array of strings/
+    );
+});
+
+test('findBestMatch handles empty target strings array', () => {
+    assert.throws(
+        () => findBestMatch('hello', []),
+        /Bad arguments: First argument should be a string, second should be an array of strings/
+    );
+});
+
+test('findBestMatch identifies first identical string as best match', () => {
+    const result = findBestMatch('hello', ['hello', 'hello', 'hello']);
+    assert.equal(result.bestMatchIndex, 0);
+    assert.equal(result.bestMatch.rating, 1);
 });

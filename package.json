@@ -1,33 +1,58 @@
 {
   "name": "dice-string-similarity",
-  "version": "1.0.0",
-  "description": "Finds degree of similarity between strings, based on Dice's Coefficient.",
-  "main": "src/index.js",
+  "version": "1.0.1",
+  "description": "String similarity utilities based on Dice's Coefficient (bigram overlap).",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
   "scripts": {
-    "test": "jest"
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm-package-json": "node ./scripts/write-esm-package-json.mjs",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:esm-package-json",
+    "prepack": "npm run build",
+    "pretest": "npm run build",
+    "test": "node --test",
+    "audit": "npm audit",
+    "audit:prod": "npm audit --omit=dev"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ascriver/dice-string-similarity.git"
+    "url": "https://github.com/ascriver/dice-string-similarity.git"
   },
+  "bugs": {
+    "url": "https://github.com/ascriver/dice-string-similarity/issues"
+  },
+  "homepage": "https://github.com/ascriver/dice-string-similarity#readme",
   "keywords": [
-    "strings",
-    "similar",
-    "difference",
+    "string",
+    "string-similarity",
     "similarity",
     "compare",
-    "comparison",
-    "degree",
-    "match",
     "matching",
+    "fuzzy-match",
+    "bigram",
     "dice",
-    "levenshtein"
+    "dice-coefficient"
   ],
   "files": [
-    "src/index.js"
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "typescript": "^5.9.3"
   }
 }

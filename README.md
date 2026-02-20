@@ -9,16 +9,36 @@ A simple and efficient JavaScript utility for comparing string similarity using 
 
 ## Installation
 
-To use the String Similarity in your project, simply copy the provided code into your JavaScript file or module.
+Install from npm:
+
+```bash
+npm install dice-string-similarity
+```
 
 ## Usage
+
+### Importing the library
+
+This package supports both ESM (`import`) and CommonJS (`require`).
+
+#### ESM
+
+```javascript
+import { compare, findBestMatch } from 'dice-string-similarity';
+```
+
+#### CommonJS
+
+```javascript
+const { compare, findBestMatch } = require('dice-string-similarity');
+```
 
 ### Comparing Two Strings
 
 To compare the similarity between two strings, use the `compare` function:
 
 ```javascript
-const { compare } = require('dice-string-similarity');
+import { compare } from 'dice-string-similarity';
 
 const similarityScore = compare('string1', 'string2');
 console.log(similarityScore); // Outputs the similarity score between 0 and 1
@@ -29,7 +49,7 @@ console.log(similarityScore); // Outputs the similarity score between 0 and 1
 To find the best match for a string from an array of target strings, use the findBestMatch function:
 
 ```javascript
-const { findBestMatch } = require('dice-string-similarity');
+import { findBestMatch } from 'dice-string-similarity';
 
 const mainString = 'main string to compare';
 const targetStrings = ['target string 1', 'target string 2', 'target string 3'];
